@@ -24,11 +24,20 @@ fn main() {
 		let len = cmd.len() as u32;
 		let outlen : [u8;4] = unsafe { mem::transmute(len) };
 		
-		let mut stream = UnixStream::connect(&path).unwrap();
+		let mut stream = match UnixStream::connect(&path) {
+			Err(e) => { println!("[Error] {}", e); continue; }
+			Ok(s) => s,
+		};
 		
-		stream.write_all( &outlen ).unwrap();
+		match stream.write_all( &outlen ) {
+			Err(e) => { println!("[Error] {}", e); continue; }
+			_ => {}
+		}
 
-		stream.write_all(cmd.as_bytes()).unwrap();
+		match stream.write_all(cmd.as_bytes()) {
+			Err(e) => { println!("[Error] {}", e); continue; }
+			_ => {}
+		}
 	
 		
 	
