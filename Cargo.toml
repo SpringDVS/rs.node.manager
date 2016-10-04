@@ -1,0 +1,11 @@
+[package]
+name = "nodeman"
+version = "0.1.0"
+authors = ["Charlie Fyvie-Gauld <cfg@zunautica.org>"]
+
+
+[[bin]]
+name = "nodeman"
+
+[dependencies]
+unix_socket = "0.5.0"
