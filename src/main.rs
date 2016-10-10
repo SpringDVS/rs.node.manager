@@ -15,10 +15,40 @@ fn main() {
 	loop {
 		std::io::stdout().write_all(b"$ ").unwrap();
 		std::io::stdout().flush().unwrap();
-		let mut cmdbuf = String::new();
-		io::stdin().read_line(&mut cmdbuf).unwrap();
-		let cmd = cmdbuf.trim_right();
+		let mut eof = false;
 		
+		
+		
+		let mut cmd = String::new();
+		
+		while !eof {
+			
+			let mut cmdbuf = String::new();
+			io::stdin().read_line(&mut cmdbuf).unwrap();
+			
+			cmdbuf = cmdbuf.trim_right().to_string();
+			
+			let mut bytes = unsafe{ cmdbuf.as_mut_vec() };
+			let l = bytes.len();
+
+			if l > 0 {
+
+				if bytes[l-1] == b'\\' {
+					//bytes[l-1] = b'\0';
+					bytes[l-1] = b'\n';
+					std::io::stdout().write_all(b">>> ").unwrap();
+					std::io::stdout().flush().unwrap();
+				} else {
+					eof = true;
+				}
+			} else {
+				std::io::stdout().write_all(b">>> ").unwrap();
+				std::io::stdout().flush().unwrap();
+				continue;
+			}
+			
+			cmd.push_str(&String::from_utf8(bytes.clone()).unwrap());
+		}
 		if cmd == "exit" { break; }
 		
 		let len = cmd.len() as u32;
