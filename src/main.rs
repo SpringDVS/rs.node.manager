@@ -36,13 +36,13 @@ fn main() {
 				if bytes[l-1] == b'\\' {
 					//bytes[l-1] = b'\0';
 					bytes[l-1] = b'\n';
-					std::io::stdout().write_all(b">>> ").unwrap();
+					//std::io::stdout().write_all(b">>> ").unwrap();
 					std::io::stdout().flush().unwrap();
 				} else {
 					eof = true;
 				}
 			} else {
-				std::io::stdout().write_all(b">>> ").unwrap();
+				//std::io::stdout().write_all(b">>> ").unwrap();
 				std::io::stdout().flush().unwrap();
 				continue;
 			}
